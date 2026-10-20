@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" href="./assets/img/logotsj.png" type="image/x-icon">
 
+  <!-- Optimización de Rendimiento: Preconexiones a CDNs externas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <!-- Precargar la imagen crítica para LCP (Hero Banner) -->
+  <link rel="preload" as="image" href="./assets/img/banner.webp" type="image/webp" fetchpriority="high">
+
   <!-- SEO Básico -->
   <title>XX Concurso de Proyectos de Innovación | TecMM Zapopan</title>
   <meta name="description" content="Evento académico del Instituto Tecnológico José Mario Molina Pasquel y Henríquez UA Zapopan. Un espacio para mostrar creatividad, tecnología e impacto social." />
@@ -30,19 +38,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts con swap para evitar bloqueo de renderizado -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     /* ===== VARIABLES GLOBALES Y PALETA CROMÁTICA ===== */
     :root {
-      /* Colores Institucionales Fijos */
-      --primary: #33157A;    /* Morado intenso */
-      --secondary: #1E208A;  /* Índigo oscuro */
-      --accent: #E52E71;     /* Rosa/Fucsia para CTA */
+      --primary: #33157A;
+      --secondary: #1E208A;
+      --accent: #E52E71;
       --accent-hover: #c91f5d;
-
-      /* Sistema de Diseño Flexible (Modo Claro por defecto) */
       --font-main: 'Inter', system-ui, -apple-system, sans-serif;
       --bg-body: #f8f9fb;
       --bg-card: #ffffff;
@@ -55,7 +60,6 @@
       --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* ===== MODO OSCURO ===== */
     [data-bs-theme="dark"] {
       --bg-body: #0d0e12;
       --bg-card: #181a20;
@@ -66,7 +70,6 @@
       --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
-    /* ESTILOS BASE MOBILE-FIRST (320px+) */
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -86,7 +89,6 @@
       color: var(--text-main);
     }
 
-    /* ===== MICROINTERACCIONES Y FOCO ===== */
     a, button {
       transition: var(--transition-smooth);
     }
@@ -96,7 +98,6 @@
       outline-offset: 3px;
     }
 
-    /* ===== NAVBAR ===== */
     .navbar {
       backdrop-filter: blur(12px);
       background-color: rgba(30, 20, 60, 0.85) !important;
@@ -121,15 +122,24 @@
       transform: scale(1.05);
     }
 
-    /* ===== HERO ===== */
+    /* HERO OPTIMIZADO PARA LCP */
     .hero {
       min-height: 85vh;
-      background: url('./assets/img/banner.webp') center/cover no-repeat;
       position: relative;
       color: #fff;
       display: flex;
       align-items: center;
       padding-top: 5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
     }
 
     .hero::before {
@@ -137,6 +147,7 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(20, 10, 45, 0.9), rgba(20, 10, 45, 0.6));
+      z-index: 1;
     }
 
     .hero-content {
@@ -149,7 +160,6 @@
       color: #ffffff;
     }
 
-    /* ===== BOTONES ===== */
     .btn-primary {
       background-color: var(--accent);
       border: none;
@@ -179,7 +189,6 @@
       color: #ffffff;
     }
 
-    /* ===== CUENTA REGRESIVA ===== */
     .countdown-section {
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       padding: 3rem 0;
@@ -221,7 +230,6 @@
       opacity: 0.9;
     }
 
-    /* ===== SECCIONES Y TARJETAS ===== */
     section {
       padding: 4rem 0;
     }
@@ -282,7 +290,6 @@
       transform: translateY(-3px);
     }
 
-    /* Badges */
     .badge-accent {
       background-color: rgba(229, 46, 113, 0.15);
       color: var(--accent);
@@ -291,7 +298,6 @@
       border-radius: 50px;
     }
 
-    /* ===== CTA ===== */
     .cta {
       background: linear-gradient(135deg, var(--primary), #632cd8);
       color: #fff;
@@ -300,7 +306,6 @@
       padding: 4rem 2rem;
     }
 
-    /* ===== FOOTER ===== */
     footer {
       background-color: #090a0d;
       color: #94a3b8;
@@ -324,11 +329,10 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Navegación principal">
       <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand d-flex align-items-center" href="#inicio">
-          <img src="./assets/img/logotsj.webp" width="42" alt="Logotipo del Tecnológico Superior de Jalisco" class="me-2">
+          <img src="./assets/img/logotsj.webp" width="42" height="42" alt="Logotipo del Tecnológico Superior de Jalisco" class="me-2">
           <strong class="d-none d-sm-inline">Concurso de Proyectos</strong>
         </a>
 
-        <!-- Botón Selector de Modo Oscuro/Claro -->
         <button id="themeToggle" class="theme-toggle-btn" type="button" aria-label="Cambiar tema de la página">
           <i class="fa-solid fa-moon" id="themeIcon" aria-hidden="true"></i>
           <span id="themeText" class="d-none d-md-inline">Modo Oscuro</span>
@@ -336,8 +340,10 @@
       </div>
     </nav>
 
-    <!-- HERO -->
+    <!-- HERO OPTIMIZADO -->
     <div class="hero" id="inicio">
+      <img src="./assets/img/banner.webp" alt="Banner Evento de Innovación" class="hero-bg-img" fetchpriority="high" width="1920" height="1080">
+      
       <div class="container hero-content text-center text-md-start">
         <h1 class="mb-3">XX Concurso de Proyectos de Innovación</h1>
         <p class="lead mb-4 text-white-50">Un espacio académico para mostrar creatividad, tecnología e impacto social.</p>
@@ -479,7 +485,6 @@
           <p>Explora proyectos destacados de ediciones pasadas filtrados por su área de especialidad.</p>
         </div>
 
-        <!-- Filtros Dinámicos -->
         <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap" id="filterContainer">
           <button class="btn btn-outline-primary active" data-filter="all">Todos</button>
           <button class="btn btn-outline-primary" data-filter="web">Desarrollo Web</button>
@@ -488,7 +493,6 @@
           <button class="btn btn-outline-primary" data-filter="mobile">App Móvil</button>
         </div>
 
-        <!-- Grid Dinámico manipulado por JS -->
         <div class="row g-4" id="projectsGrid">
           <!-- Renderizado dinámico desde JS -->
         </div>
@@ -541,13 +545,13 @@
         <div class="row g-4">
           <div class="col-md-6">
             <article class="card p-3 text-center h-100">
-              <img src="assets/img/labs/proximamente.webp" alt="Distribución matutina próximamente" class="img-fluid rounded mb-3" loading="lazy">
+              <img src="assets/img/labs/proximamente.webp" alt="Distribución matutina próximamente" class="img-fluid rounded mb-3" loading="lazy" width="600" height="400">
               <h3 class="h5 mb-0">Turno Matutino</h3>
             </article>
           </div>
           <div class="col-md-6">
             <article class="card p-3 text-center h-100">
-              <img src="assets/img/labs/proximamente.webp" alt="Distribución vespertina próximamente" class="img-fluid rounded mb-3" loading="lazy">
+              <img src="assets/img/labs/proximamente.webp" alt="Distribución vespertina próximamente" class="img-fluid rounded mb-3" loading="lazy" width="600" height="400">
               <h3 class="h5 mb-0">Turno Vespertino</h3>
             </article>
           </div>
@@ -555,7 +559,7 @@
       </div>
     </section>
 
-    <!-- FORMULARIO DE REGISTRO / CONTACTO INTERACTIVO -->
+    <!-- FORMULARIO DE REGISTRO INTERACTIVO -->
     <section id="registro" class="section-alt" aria-labelledby="title-registro">
       <div class="container">
         <div class="section-title">
@@ -566,8 +570,6 @@
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <div class="card p-4 p-md-5">
-
-              <!-- Alerta de Respuesta Asíncrona -->
               <div id="formAlert" class="alert d-none mb-4" role="alert"></div>
 
               <form id="registrationForm" novalidate>
@@ -615,14 +617,13 @@
                   </div>
                 </div>
               </form>
-
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PREGUNTAS FRECUENTES (ACORDEÓN INTERACTIVO) -->
+    <!-- PREGUNTAS FRECUENTES -->
     <section id="faq" aria-labelledby="title-faq">
       <div class="container">
         <div class="section-title">
@@ -689,7 +690,7 @@
           <div class="col-md-6">
             <h3 class="h4">Mapa de la Unidad Académica</h3>
             <p class="text-muted">Edificio L, sede del evento, perteneciente a la Academia de Ingeniería en Sistemas Computacionales.</p>
-            <img src="./assets/img/labs-ubicacion.webp" alt="Plano general de la Unidad Académica Zapopan" class="img-fluid rounded shadow-sm w-100" loading="lazy">
+            <img src="./assets/img/labs-ubicacion.webp" alt="Plano general de la Unidad Académica Zapopan" class="img-fluid rounded shadow-sm w-100" loading="lazy" width="800" height="600">
           </div>
 
           <div class="col-md-6">
@@ -713,7 +714,7 @@
         <div class="row g-4">
           <div class="col-sm-6 col-lg-3">
             <article class="card person-card h-100">
-              <img src="https://scontent-qro1-2.xx.fbcdn.net/v/t39.30808-1/458610495_10230659795496885_6108370343858437953_n.jpg?stp=c103.31.386.386a_dst-jpg_tt6&cstp=mx386x386&ctp=s200x200&_nc_cat=111&ccb=1-7&_nc_sid=e99d92&_nc_ohc=ogxznYdRAUwQ7kNvwH07oHF&_nc_oc=AdoO2y3KmzgJyrTixH-krhy8RBCL4NfFndrZ-xKG4-V5qZxx9kej9Me0O3IM2MZjF3o&_nc_zt=24&_nc_ht=scontent-qro1-2.xx&_nc_gid=etByCok0QyoZPJYMR4avDQ&_nc_ss=7b2a8&oh=00_AQMlFB3XwhnBQlvaLSQB_dMkmV4904NtB9L09f--NDk-1Q&oe=6ADBEBA6" alt="Nancy Ruiz Monroy" class="w-100" loading="lazy">
+              <img src="https://scontent-qro1-2.xx.fbcdn.net/v/t39.30808-1/458610495_10230659795496885_6108370343858437953_n.jpg?stp=c103.31.386.386a_dst-jpg_tt6&cstp=mx386x386&ctp=s200x200&_nc_cat=111&ccb=1-7&_nc_sid=e99d92&_nc_ohc=ogxznYdRAUwQ7kNvwH07oHF&_nc_oc=AdoO2y3KmzgJyrTixH-krhy8RBCL4NfFndrZ-xKG4-V5qZxx9kej9Me0O3IM2MZjF3o&_nc_zt=24&_nc_ht=scontent-qro1-2.xx&_nc_gid=etByCok0QyoZPJYMR4avDQ&_nc_ss=7b2a8&oh=00_AQMlFB3XwhnBQlvaLSQB_dMkmV4904NtB9L09f--NDk-1Q&oe=6ADBEBA6" alt="Nancy Ruiz Monroy" class="w-100" loading="lazy" width="300" height="260">
               <div class="card-body text-center">
                 <h3 class="h6 mb-1">Nancy Ruiz Monroy</h3>
                 <small class="text-muted">Coordinadora</small>
@@ -723,7 +724,7 @@
 
           <div class="col-sm-6 col-lg-3">
             <article class="card person-card h-100">
-              <img src="https://scontent-qro3-1.xx.fbcdn.net/v/t39.30808-6/469069327_10163217223923760_109229725857119630_n.jpg?stp=dst-jpg_tt6&cstp=mx480x480&ctp=s480x480&_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=8Ta9qShLxQsQ7kNvwHkcDrY&_nc_oc=Adr-13oxHIoo-Jx3K3fCz-b9GlBZS0ajLWE3D3U9IydSCqk6LAhu2b9y4LikC_o0XxM&_nc_zt=23&_nc_ht=scontent-qro3-1.xx&_nc_gid=iJsxyGkT6Fhysah1jj1PRQ&_nc_ss=7b2a8&oh=00_AQMQ2qG1fB2SGrc0ip61Ut_5vK3QpN3f01StLEVThXj5AA&oe=6ADBDC9B" alt="Quinatzin Reyes Gómez" class="w-100" loading="lazy">
+              <img src="https://scontent-qro3-1.xx.fbcdn.net/v/t39.30808-6/469069327_10163217223923760_109229725857119630_n.jpg?stp=dst-jpg_tt6&cstp=mx480x480&ctp=s480x480&_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=8Ta9qShLxQsQ7kNvwHkcDrY&_nc_oc=Adr-13oxHIoo-Jx3K3fCz-b9GlBZS0ajLWE3D3U9IydSCqk6LAhu2b9y4LikC_o0XxM&_nc_zt=23&_nc_ht=scontent-qro3-1.xx&_nc_gid=iJsxyGkT6Fhysah1jj1PRQ&_nc_ss=7b2a8&oh=00_AQMQ2qG1fB2SGrc0ip61Ut_5vK3QpN3f01StLEVThXj5AA&oe=6ADBDC9B" alt="Quinatzin Reyes Gómez" class="w-100" loading="lazy" width="300" height="260">
               <div class="card-body text-center">
                 <h3 class="h6 mb-1">Quinatzin Reyes Gómez</h3>
                 <small class="text-muted">Coordinador</small>
@@ -733,7 +734,7 @@
 
           <div class="col-sm-6 col-lg-3">
             <article class="card person-card h-100">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS8NE9LM7TvvDi4sld6PGAmuStd6QfArTsyuqfPSHVEw&s=10" alt="León Miguel Ramos Corchado" class="w-100" loading="lazy">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS8NE9LM7TvvDi4sld6PGAmuStd6QfArTsyuqfPSHVEw&s=10" alt="León Miguel Ramos Corchado" class="w-100" loading="lazy" width="300" height="260">
               <div class="card-body text-center">
                 <h3 class="h6 mb-1">León Miguel Ramos Corchado</h3>
                 <small class="text-muted">Coordinador</small>
@@ -743,7 +744,7 @@
 
           <div class="col-sm-6 col-lg-3">
             <article class="card person-card h-100">
-              <img src="https://scontent-qro1-1.xx.fbcdn.net/v/t39.30808-6/347629271_194538283519200_3500123676656223234_n.jpg?stp=dst-jpg_tt6&cstp=mx959x960&ctp=s959x960&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=orRd6BK8FI0Q7kNvwG0t9MG&_nc_oc=Adr3en_f-3CuvsCXXUJcDzY_IdwctIdaSRw3Hu-hlTuSv7qTfRiCUe-HE2U3Ae7mLN0&_nc_zt=23&_nc_ht=scontent-qro1-1.xx&_nc_gid=JanFxEQhnvlmxkciUPn05A&_nc_ss=7b2a8&oh=00_AQOv552nOq32cMGzawlCpHznqbSBUOWbkATRQ2uCwS7DoA&oe=6ADBEDEB" alt="Irma Toscano Barajas" class="w-100" loading="lazy">
+              <img src="https://scontent-qro1-1.xx.fbcdn.net/v/t39.30808-6/347629271_194538283519200_3500123676656223234_n.jpg?stp=dst-jpg_tt6&cstp=mx959x960&ctp=s959x960&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=orRd6BK8FI0Q7kNvwG0t9MG&_nc_oc=Adr3en_f-3CuvsCXXUJcDzY_IdwctIdaSRw3Hu-hlTuSv7qTfRiCUe-HE2U3Ae7mLN0&_nc_zt=23&_nc_ht=scontent-qro1-1.xx&_nc_gid=JanFxEQhnvlmxkciUPn05A&_nc_ss=7b2a8&oh=00_AQOv552nOq32cMGzawlCpHznqbSBUOWbkATRQ2uCwS7DoA&oe=6ADBEDEB" alt="Irma Toscano Barajas" class="w-100" loading="lazy" width="300" height="260">
               <div class="card-body text-center">
                 <h3 class="h6 mb-1">Irma Toscano Barajas</h3>
                 <small class="text-muted">Colaboradora</small>
@@ -763,16 +764,16 @@
         </div>
         <div class="row g-4 align-items-center justify-content-center">
           <div class="col-6 col-md-3 text-center">
-            <img src="./assets/img/logos/86854456.webp" class="img-fluid opacity-75" alt="SoftServe" style="max-height: 70px;" loading="lazy">
+            <img src="./assets/img/logos/86854456.webp" class="img-fluid opacity-75" alt="SoftServe" style="max-height: 70px;" loading="lazy" width="200" height="70">
           </div>
           <div class="col-6 col-md-3 text-center">
-            <img src="./assets/img/logos/Recurso 1.webp" class="img-fluid opacity-75" alt="Zegnal Consulting" style="max-height: 70px;" loading="lazy">
+            <img src="./assets/img/logos/Recurso 1.webp" class="img-fluid opacity-75" alt="Zegnal Consulting" style="max-height: 70px;" loading="lazy" width="200" height="70">
           </div>
           <div class="col-6 col-md-3 text-center">
-            <img src="./assets/img/logos/34243242.webp" class="img-fluid opacity-75" alt="CodeNation" style="max-height: 70px;" loading="lazy">
+            <img src="./assets/img/logos/34243242.webp" class="img-fluid opacity-75" alt="CodeNation" style="max-height: 70px;" loading="lazy" width="200" height="70">
           </div>
           <div class="col-6 col-md-3 text-center">
-            <img src="./assets/img/logos/47993983.webp" class="img-fluid opacity-75" alt="Secretaría de Educación Jalisco" style="max-height: 70px;" loading="lazy">
+            <img src="./assets/img/logos/47993983.webp" class="img-fluid opacity-75" alt="Secretaría de Educación Jalisco" style="max-height: 70px;" loading="lazy" width="200" height="70">
           </div>
         </div>
       </div>
@@ -794,7 +795,7 @@
     <div class="container py-5">
       <div class="row g-4">
         <div class="col-md-4">
-          <img src="./assets/img/logotsj.webp" width="60" alt="Logo TSJ Zapopan" class="mb-3" loading="lazy">
+          <img src="./assets/img/logotsj.webp" width="60" height="60" alt="Logo TSJ Zapopan" class="mb-3" loading="lazy">
           <p class="mb-1 text-white">Instituto Tecnológico José Mario Molina Pasquel y Henríquez</p>
           <small class="text-muted">Unidad Académica Zapopan</small>
         </div>
@@ -861,9 +862,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-      /* ==========================================
-         1. CONTROLADOR DE TEMA (MODO CLARO/OSCURO)
-         ========================================== */
+      /* 1. CONTROLADOR DE TEMA */
       const themeToggleBtn = document.getElementById('themeToggle');
       const themeIcon = document.getElementById('themeIcon');
       const themeText = document.getElementById('themeText');
@@ -888,9 +887,7 @@
         setTheme(currentTheme === 'dark' ? 'light' : 'dark');
       });
 
-      /* ==========================================
-         2. CUENTA REGRESIVA DINÁMICA
-         ========================================== */
+      /* 2. CUENTA REGRESIVA DINÁMICA */
       const targetDate = new Date("2026-11-25T09:00:00").getTime();
       const elDays = document.getElementById("cd-days");
       const elHours = document.getElementById("cd-hours");
@@ -919,9 +916,7 @@
       const countdownTimer = setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      /* ==========================================
-         3. CATÁLOGO / SECCIÓN INTERACTIVA DE PROYECTOS
-         ========================================== */
+      /* 3. CATÁLOGO DE PROYECTOS */
       const projectsData = [
         { id: 1, title: 'AgroSense IoT', category: 'iot', desc: 'Monitoreo de cultivos con sensores de humedad e inteligencia ambiental.', edition: 'XIX Edición' },
         { id: 2, title: 'IA Diagnóstico Médico', category: 'ia', desc: 'Modelo de visión por computadora para detección temprana en radiografías.', edition: 'XIX Edición' },
@@ -965,14 +960,11 @@
 
       renderProjects('all');
 
-      /* ==========================================
-         4. VALIDACIÓN DE FORMULARIO EN TIEMPO REAL
-         ========================================== */
+      /* 4. VALIDACIÓN DE FORMULARIO EN TIEMPO REAL */
       const registrationForm = document.getElementById('registrationForm');
       const emailInput = document.getElementById('studentEmail');
       const formAlert = document.getElementById('formAlert');
 
-      // Validar email institucional
       const validateEmail = (email) => {
         const regex = /^[a-zA-Z0-9._%+-]+@(zapopan\.)?tecmm\.edu\.mx$/i;
         return regex.test(email);
@@ -992,7 +984,6 @@
         return isValid;
       };
 
-      // Listeners de validación interactiva
       if (registrationForm) {
         const inputs = registrationForm.querySelectorAll('input, select, textarea');
         
@@ -1018,7 +1009,6 @@
             return;
           }
 
-          // Simulación de envío exitoso sin recargar la página
           formAlert.className = 'alert alert-success';
           formAlert.innerText = '¡Pre-registro enviado exitosamente! Nos pondremos en contacto pronto.';
           formAlert.classList.remove('d-none');
