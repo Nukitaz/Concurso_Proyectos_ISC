@@ -167,6 +167,18 @@
       box-shadow: 0 8px 25px rgba(229, 46, 113, 0.5);
     }
 
+    .btn-outline-primary {
+      color: var(--accent);
+      border-color: var(--accent);
+      border-radius: var(--radius);
+    }
+
+    .btn-outline-primary:hover, .btn-outline-primary.active {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
     /* ===== CUENTA REGRESIVA ===== */
     .countdown-section {
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -270,6 +282,15 @@
       transform: translateY(-3px);
     }
 
+    /* Badges */
+    .badge-accent {
+      background-color: rgba(229, 46, 113, 0.15);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.35em 0.65em;
+      border-radius: 50px;
+    }
+
     /* ===== CTA ===== */
     .cta {
       background: linear-gradient(135deg, var(--primary), #632cd8);
@@ -320,7 +341,10 @@
       <div class="container hero-content text-center text-md-start">
         <h1 class="mb-3">XX Concurso de Proyectos de Innovación</h1>
         <p class="lead mb-4 text-white-50">Un espacio académico para mostrar creatividad, tecnología e impacto social.</p>
-        <a href="#programa" class="btn btn-primary btn-lg">Ver programa</a>
+        <div class="d-flex gap-3 justify-content-center justify-content-md-start flex-wrap">
+          <a href="#registro" class="btn btn-primary btn-lg">Registrar Proyecto</a>
+          <a href="#programa" class="btn btn-outline-light btn-lg">Ver programa</a>
+        </div>
       </div>
     </div>
   </header>
@@ -328,7 +352,7 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main>
 
-    <!-- CUENTA REGRESIVA -->
+    <!-- CUENTA REGRESIVA DINÁMICA -->
     <section class="countdown-section" aria-label="Cuenta regresiva del evento">
       <div class="container">
         <div class="row text-center justify-content-center align-items-center">
@@ -447,8 +471,32 @@
       </div>
     </section>
 
+    <!-- SECCIÓN INTERACTIVA: CATÁLOGO DE PROYECTOS GANADORES -->
+    <section id="proyectos-destacados" class="section-alt" aria-labelledby="title-proyectos">
+      <div class="container">
+        <div class="section-title">
+          <h2 id="title-proyectos">Proyectos Destacados Anteriores</h2>
+          <p>Explora proyectos destacados de ediciones pasadas filtrados por su área de especialidad.</p>
+        </div>
+
+        <!-- Filtros Dinámicos -->
+        <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap" id="filterContainer">
+          <button class="btn btn-outline-primary active" data-filter="all">Todos</button>
+          <button class="btn btn-outline-primary" data-filter="web">Desarrollo Web</button>
+          <button class="btn btn-outline-primary" data-filter="ia">Inteligencia Artificial</button>
+          <button class="btn btn-outline-primary" data-filter="iot">Internet de las Cosas</button>
+          <button class="btn btn-outline-primary" data-filter="mobile">App Móvil</button>
+        </div>
+
+        <!-- Grid Dinámico manipulado por JS -->
+        <div class="row g-4" id="projectsGrid">
+          <!-- Renderizado dinámico desde JS -->
+        </div>
+      </div>
+    </section>
+
     <!-- PROGRAMA -->
-    <section id="programa" class="section-alt" aria-labelledby="title-programa">
+    <section id="programa" aria-labelledby="title-programa">
       <div class="container">
         <div class="section-title">
           <h2 id="title-programa">Programa del Evento</h2>
@@ -483,25 +531,123 @@
       </div>
     </section>
 
-    <!-- LABORATORIOS -->
-    <section id="labs" aria-labelledby="title-labs">
+    <!-- FORMULARIO DE REGISTRO / CONTACTO INTERACTIVO -->
+    <section id="registro" class="section-alt" aria-labelledby="title-registro">
       <div class="container">
         <div class="section-title">
-          <h2 id="title-labs">Distribución de Laboratorios</h2>
-          <p>La ceremonia de premiación a los ganadores de los tres primeros lugares se llevará a cabo a las 10:00 a. m. en las instalaciones del <strong>Domo / Auditorio</strong>.</p>
+          <h2 id="title-registro">Pre-Registro de Proyectos</h2>
+          <p>Inscribe tu proyecto o solicita informes para la próxima edición del concurso.</p>
         </div>
-        <div class="row g-4">
-          <div class="col-md-6">
-            <article class="card p-3 text-center h-100">
-              <img src="assets/img/labs/proximamente.png" alt="Distribución matutina próximamente" class="img-fluid rounded mb-3">
-              <h3 class="h5 mb-0">Turno Matutino</h3>
-            </article>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card p-4 p-md-5">
+
+              <!-- Alerta de Respuesta Asíncrona -->
+              <div id="formAlert" class="alert d-none mb-4" role="alert"></div>
+
+              <form id="registrationForm" novalidate>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="fullName" class="form-label font-weight-bold">Nombre Completo *</label>
+                    <input type="text" class="form-control" id="fullName" required placeholder="Ej. Ana María Gómez">
+                    <div class="invalid-feedback">Por favor introduce tu nombre completo.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="studentEmail" class="form-label font-weight-bold">Correo Institucional *</label>
+                    <input type="email" class="form-control" id="studentEmail" required placeholder="usuario@zapopan.tecmm.edu.mx">
+                    <div class="invalid-feedback" id="emailFeedback">Ingresa un correo válido con dominio @tecmm.edu.mx o @zapopan.tecmm.edu.mx</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="projectName" class="form-label font-weight-bold">Nombre del Proyecto *</label>
+                    <input type="text" class="form-control" id="projectName" required placeholder="Ej. Sistema IoT Agrícola">
+                    <div class="invalid-feedback">El nombre del proyecto es obligatorio.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="categorySelect" class="form-label font-weight-bold">Categoría *</label>
+                    <select class="form-select" id="categorySelect" required>
+                      <option value="" selected disabled>Selecciona una categoría...</option>
+                      <option value="web">Desarrollo Web & Mobile</option>
+                      <option value="ia">Inteligencia Artificial / Datos</option>
+                      <option value="iot">Internet de las Cosas (IoT)</option>
+                      <option value="software">Software Social / Empresarial</option>
+                    </select>
+                    <div class="invalid-feedback">Por favor selecciona una categoría.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="projectDescription" class="form-label font-weight-bold">Resumen del Proyecto *</label>
+                    <textarea class="form-control" id="projectDescription" rows="4" required minlength="20" placeholder="Describe brevemente el objetivo y alcance del proyecto (Mínimo 20 caracteres)..."></textarea>
+                    <div class="invalid-feedback">Describe tu proyecto con al menos 20 caracteres.</div>
+                  </div>
+
+                  <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                      <i class="fa-solid fa-paper-plane me-2"></i>Enviar Pre-Registro
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
           </div>
-          <div class="col-md-6">
-            <article class="card p-3 text-center h-100">
-              <img src="assets/img/labs/proximamente.png" alt="Distribución vespertina próximamente" class="img-fluid rounded mb-3">
-              <h3 class="h5 mb-0">Turno Vespertino</h3>
-            </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREGUNTAS FRECUENTES (ACORDEÓN INTERACTIVO) -->
+    <section id="faq" aria-labelledby="title-faq">
+      <div class="container">
+        <div class="section-title">
+          <h2 id="title-faq">Preguntas Frecuentes</h2>
+          <p>Resuelve tus dudas sobre el registro, la presentación y la evaluación.</p>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="accordion shadow-sm" id="accordionFAQ">
+              <div class="accordion-item border-0 mb-3 rounded overflow-hidden">
+                <h3 class="accordion-header" id="headingOne">
+                  <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    ¿Quiénes pueden participar en el concurso?
+                  </button>
+                </h3>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFAQ">
+                  <div class="accordion-body text-muted">
+                    Todos los estudiantes inscritos en la carrera de Ingeniería en Sistemas Computacionales del TecMM Zapopan pueden inscribir sus proyectos desarrollados durante el semestre actual.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item border-0 mb-3 rounded overflow-hidden">
+                <h3 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    ¿Cuáles son los criterios de evaluación de los jueces?
+                  </button>
+                </h3>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFAQ">
+                  <div class="accordion-body text-muted">
+                    Se evalúa el grado de innovación técnica, la arquitectura de software/hardware, la viabilidad de la solución, el impacto social y la calidad de la exposición oral.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item border-0 rounded overflow-hidden">
+                <h3 class="accordion-header" id="headingThree">
+                  <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    ¿Cuál es el formato de la exposición?
+                  </button>
+                </h3>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFAQ">
+                  <div class="accordion-body text-muted">
+                    Cada equipo contará con un espacio asignado en los laboratorios para realizar demostraciones en vivo y presentar su póster ante el comité evaluador y visitantes.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -634,7 +780,7 @@
           <ul class="list-unstyled">
             <li class="mb-2"><a href="#inicio">Inicio</a></li>
             <li class="mb-2"><a href="#programa">Programa</a></li>
-            <li class="mb-2"><a href="#labs">Laboratorios</a></li>
+            <li class="mb-2"><a href="#proyectos-destacados">Proyectos</a></li>
             <li class="mb-2"><a href="#organizadores">Organizadores</a></li>
             <li class="mb-2"><a href="#aliados">Empresas aliadas</a></li>
           </ul>
@@ -686,65 +832,179 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT & MODO OSCURO -->
+  <!-- JAVASCRIPT (MODERNO ES6+) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // 1. SELECTOR DE MODO OSCURO / CLARO CON PERSISTENCIA (localStorage)
-    const themeToggleBtn = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeText = document.getElementById('themeText');
-    const htmlElement = document.documentElement;
+    document.addEventListener('DOMContentLoaded', () => {
 
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
+      /* ==========================================
+         1. CONTROLADOR DE TEMA (MODO CLARO/OSCURO)
+         ========================================== */
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeText = document.getElementById('themeText');
+      const htmlElement = document.documentElement;
 
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = htmlElement.getAttribute('data-bs-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      setTheme(newTheme);
+      const setTheme = (theme) => {
+        htmlElement.setAttribute('data-bs-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          themeIcon.className = 'fa-solid fa-sun';
+          themeText.innerText = 'Modo Claro';
+        } else {
+          themeIcon.className = 'fa-solid fa-moon';
+          themeText.innerText = 'Modo Oscuro';
+        }
+      };
+
+      setTheme(localStorage.getItem('theme') || 'light');
+
+      themeToggleBtn?.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      });
+
+      /* ==========================================
+         2. CUENTA REGRESIVA DINÁMICA
+         ========================================== */
+      const targetDate = new Date("2026-11-25T09:00:00").getTime();
+      const elDays = document.getElementById("cd-days");
+      const elHours = document.getElementById("cd-hours");
+      const elMinutes = document.getElementById("cd-minutes");
+      const elSeconds = document.getElementById("cd-seconds");
+
+      const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+          clearInterval(countdownTimer);
+          [elDays, elHours, elMinutes, elSeconds].forEach(el => el ? el.innerText = "00" : null);
+          const countdownTitle = document.querySelector(".countdown-section h2");
+          if (countdownTitle) countdownTitle.innerText = "¡El evento ha comenzado!";
+          return;
+        }
+
+        const format = (num) => String(num).padStart(2, '0');
+        if (elDays) elDays.innerText = format(Math.floor(distance / (1000 * 60 * 60 * 24)));
+        if (elHours) elHours.innerText = format(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        if (elMinutes) elMinutes.innerText = format(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+        if (elSeconds) elSeconds.innerText = format(Math.floor((distance % (1000 * 60)) / 1000));
+      };
+
+      const countdownTimer = setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      /* ==========================================
+         3. CATÁLOGO / SECCIÓN INTERACTIVA DE PROYECTOS
+         ========================================== */
+      const projectsData = [
+        { id: 1, title: 'AgroSense IoT', category: 'iot', desc: 'Monitoreo de cultivos con sensores de humedad e inteligencia ambiental.', edition: 'XIX Edición' },
+        { id: 2, title: 'IA Diagnóstico Médico', category: 'ia', desc: 'Modelo de visión por computadora para detección temprana en radiografías.', edition: 'XIX Edición' },
+        { id: 3, title: 'Portal E-Commerce ISC', category: 'web', desc: 'Plataforma web accesible y escalable para comercios locales.', edition: 'XVIII Edición' },
+        { id: 4, title: 'App Control de Hábitos', category: 'mobile', desc: 'Aplicación multiplataforma para gestión del tiempo y bienestar estudiantil.', edition: 'XIX Edición' },
+        { id: 5, title: 'Smart Home Hub', category: 'iot', desc: 'Control domótico centralizado basado en microcontroladores de bajo costo.', edition: 'XVIII Edición' },
+        { id: 6, title: 'Bot Asistente Académico', category: 'ia', desc: 'Agente conversacional de apoyo a estudiantes para trámites y horarios.', edition: 'XIX Edición' }
+      ];
+
+      const projectsGrid = document.getElementById('projectsGrid');
+      const filterButtons = document.querySelectorAll('#filterContainer button');
+
+      const renderProjects = (filter = 'all') => {
+        if (!projectsGrid) return;
+        
+        const filtered = filter === 'all' 
+          ? projectsData 
+          : projectsData.filter(p => p.category === filter);
+
+        projectsGrid.innerHTML = filtered.map(p => `
+          <div class="col-md-6 col-lg-4">
+            <article class="card h-100 p-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge badge-accent">${p.category.toUpperCase()}</span>
+                <small class="text-muted">${p.edition}</small>
+              </div>
+              <h3 class="h5 font-weight-bold mb-2">${p.title}</h3>
+              <p class="text-muted small mb-0">${p.desc}</p>
+            </article>
+          </div>
+        `).join('');
+      };
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          renderProjects(e.target.dataset.filter);
+        });
+      });
+
+      renderProjects('all');
+
+      /* ==========================================
+         4. VALIDACIÓN DE FORMULARIO EN TIEMPO REAL
+         ========================================== */
+      const registrationForm = document.getElementById('registrationForm');
+      const emailInput = document.getElementById('studentEmail');
+      const formAlert = document.getElementById('formAlert');
+
+      // Validar email institucional
+      const validateEmail = (email) => {
+        const regex = /^[a-zA-Z0-9._%+-]+@(zapopan\.)?tecmm\.edu\.mx$/i;
+        return regex.test(email);
+      };
+
+      const validateInput = (input) => {
+        if (input === emailInput) {
+          const isValid = validateEmail(input.value.trim());
+          input.classList.toggle('is-valid', isValid);
+          input.classList.toggle('is-invalid', !isValid);
+          return isValid;
+        }
+
+        const isValid = input.checkValidity() && input.value.trim().length >= (input.minLength || 1);
+        input.classList.toggle('is-valid', isValid);
+        input.classList.toggle('is-invalid', !isValid);
+        return isValid;
+      };
+
+      // Listeners de validación interactiva
+      if (registrationForm) {
+        const inputs = registrationForm.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+          input.addEventListener('input', () => validateInput(input));
+          input.addEventListener('blur', () => validateInput(input));
+        });
+
+        registrationForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          let formIsValid = true;
+          inputs.forEach(input => {
+            if (!validateInput(input)) {
+              formIsValid = false;
+            }
+          });
+
+          if (!formIsValid) {
+            formAlert.className = 'alert alert-danger';
+            formAlert.innerText = 'Por favor corrige los errores del formulario antes de enviar.';
+            formAlert.classList.remove('d-none');
+            return;
+          }
+
+          // Simulación de envío exitoso sin recargar la página
+          formAlert.className = 'alert alert-success';
+          formAlert.innerText = '¡Pre-registro enviado exitosamente! Nos pondremos en contacto pronto.';
+          formAlert.classList.remove('d-none');
+
+          registrationForm.reset();
+          inputs.forEach(input => input.classList.remove('is-valid', 'is-invalid'));
+        });
+      }
+
     });
-
-    function setTheme(theme) {
-      htmlElement.setAttribute('data-bs-theme', theme);
-      localStorage.setItem('theme', theme);
-
-      if (theme === 'dark') {
-        themeIcon.className = 'fa-solid fa-sun';
-        themeText.innerText = 'Modo Claro';
-      } else {
-        themeIcon.className = 'fa-solid fa-moon';
-        themeText.innerText = 'Modo Oscuro';
-      }
-    }
-
-    // 2. CUENTA REGRESIVA
-    const eventDate = new Date("2026-11-25T09:00:00").getTime();
-
-    const countdown = setInterval(function() {
-      const now = new Date().getTime();
-      const distance = eventDate - now;
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      const formatTime = (time) => time < 10 ? `0${time}` : time;
-
-      document.getElementById("cd-days").innerText = formatTime(days);
-      document.getElementById("cd-hours").innerText = formatTime(hours);
-      document.getElementById("cd-minutes").innerText = formatTime(minutes);
-      document.getElementById("cd-seconds").innerText = formatTime(seconds);
-
-      if (distance < 0) {
-        clearInterval(countdown);
-        document.getElementById("cd-days").innerText = "00";
-        document.getElementById("cd-hours").innerText = "00";
-        document.getElementById("cd-minutes").innerText = "00";
-        document.getElementById("cd-seconds").innerText = "00";
-        document.querySelector(".countdown-section h2").innerText = "¡El evento ha comenzado!";
-      }
-    }, 1000);
   </script>
 </body>
 </html>
