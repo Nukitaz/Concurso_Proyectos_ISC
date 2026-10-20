@@ -1,18 +1,18 @@
-# 🚀 XX Concurso de Proyectos de Innovación — TecMM Zapopan
+# XX Concurso de Proyectos de Innovación — TecMM Zapopan
 
 Repositorio oficial del sitio web del **XX Concurso de Proyectos de Innovación**, organizado por la Academia de Ingeniería en Sistemas Computacionales del Instituto Tecnológico José Mario Molina Pasquel y Henríquez (Unidad Académica Zapopan).
 
 ---
 
-## 🌐 Sitio Web en Producción
+## Sitio Web en Producción
 
 Puedes consultar la versión publicada y en línea del proyecto en el siguiente enlace:
 
-👉 **[Ver Sitio Publicado en GitHub Pages / Hosting](#)** *(Reemplazar con la URL real de tu proyecto)*
+**[Ver Sitio Publicado en GitHub Pages / Hosting](#)** *(Reemplazar con la URL real de tu proyecto)*
 
 ---
 
-## ✨ Mejoras Realizadas
+## Mejoras Realizadas
 
 Se llevó a cabo una refactorización integral del sitio web abarcando arquitectura, diseño, interactividad y rendimiento:
 
@@ -39,7 +39,7 @@ Se llevó a cabo una refactorización integral del sitio web abarcando arquitect
 
 ---
 
-## 🛠️ Tecnologías y Librerías Utilizadas
+## Tecnologías y Librerías Utilizadas
 
 * **Lenguajes:** HTML5, CSS3, JavaScript (ES6+).
 * **Framework CSS:** [Bootstrap 5.3](https://getbootstrap.com/) (Sistema de Grid, Componentes Modales, Acordeón, Clases de Utilidad).
@@ -50,7 +50,7 @@ Se llevó a cabo una refactorización integral del sitio web abarcando arquitect
 
 ---
 
-## 📸 Capturas de Pantalla (Antes y Después)
+## Capturas de Pantalla (Antes y Después)
 
 | Versión Original (Antes) | Versión Refactorizada (Después) |
 | :---: | :---: |
@@ -61,6 +61,6 @@ Se llevó a cabo una refactorización integral del sitio web abarcando arquitect
 
 ---
 
-## ✒️ Autor / Créditos
+## Autor / Créditos
 
-Desarrollado y refactorizado por **[Tu Nombre Completo / Nombre de usuario de GitHub]** para la Academia de Ingeniería en Sistemas Computacionales de la **Unidad Académica Zapopan (TecMM)**.
+Desarrollado y refactorizado por **[@Nukitaz]** para la Academia de Ingeniería en Sistemas Computacionales de la **Unidad Académica Zapopan (TecMM)**.
