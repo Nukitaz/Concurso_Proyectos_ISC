@@ -4,14 +4,6 @@ Repositorio oficial del sitio web del **XX Concurso de Proyectos de Innovación*
 
 ---
 
-## Sitio Web en Producción
-
-Puedes consultar la versión publicada y en línea del proyecto en el siguiente enlace:
-
-**[Ver Sitio Publicado en GitHub Pages / Hosting](#)** *(Reemplazar con la URL real de tu proyecto)*
-
----
-
 ## Mejoras Realizadas
 
 Se llevó a cabo una refactorización integral del sitio web abarcando arquitectura, diseño, interactividad y rendimiento:
