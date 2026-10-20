@@ -54,9 +54,9 @@ Se llevó a cabo una refactorización integral del sitio web abarcando arquitect
 
 | Versión Original (Antes) | Versión Refactorizada (Después) |
 | :---: | :---: |
-| ![Sitio Original](./assets/old-new/old 1.png) | ![Sitio Optimizado - Modo Claro](./assets/old-new/new 1.png) |
-| ![Sitio Original](./assets/old-new/old 2.png) | ![Sitio Optimizado - Modo Claro](./assets/old-new/new 2.png) |
-| ![Sitio Original](./assets/old-new/old 3.png) | ![Sitio Optimizado - Modo Claro](./assets/old-new/new 3.png) |
+| ![Sitio Original](./assets/old-new/old_1.png) | ![Sitio Optimizado - Modo Claro](./assets/old-new/new_1.png) |
+| ![Sitio Original](./assets/old-new/old_2.png) | ![Sitio Optimizado - Modo Claro](./assets/old-new/new_2.png) |
+| ![Sitio Original](./assets/old-new/old_3.png) | ![Sitio Optimizado - Modo Claro](./assets/old-new/new_3.png) |
 | *Estructura basada en divs genéricos sin metadatos ni modo oscuro.* | *Diseño semántico con variables CSS, responsive y componentes interactivos.* |
 
 ---
